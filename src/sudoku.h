@@ -1,43 +1,17 @@
 #pragma once
+#include <stdio.h>
+#include <math.h> 
 
-#include <stdbool.h>
-
-#define BOARD_SIZE 9
-
-struct Cell_impl
-{
-    int row_index;
-    int col_index;
-    int box_index;
-    int num_candidates;
-    int candidates[BOARD_SIZE];
-    int value; // solved or 0
+char map[32] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'};
+struct cell{
+	int num;
+	int cand[10]; // 0. value as bool of presence; "1" for yes
+    int row[9]; // bool of #s in its row, "1" for no
+    int col[9]; // bool of #s in its col, "1" for no
+    int box[9]; // bool of #s in its box, "1" for no
 };
 
-typedef struct Cell_impl Cell;
-
-struct SudokuBoard_impl
-{
-    int solved_counter;
-    Cell **data; // 9x9 cell board
-
-    Cell **p_rows[BOARD_SIZE];  // rows pointers
-    Cell **p_cols[BOARD_SIZE];  // cols pointers
-    Cell **p_boxes[BOARD_SIZE]; // boxes pointers
-    Cell *solved_cells[BOARD_SIZE *
-                       BOARD_SIZE]; // solved cell pointers (maximum)
-};
-
-typedef struct SudokuBoard_impl SudokuBoard;
-
-void init_sudoku(SudokuBoard *p_board);
-void load_sudoku(SudokuBoard *p_board, char *input_text);
-bool apply_constraint(Cell **p_cells, int value);
-bool is_in_list(Cell **p_array, int size, Cell *p);
-void print_candidate_num(SudokuBoard *p_board);
-void print_solution(SudokuBoard *p_board);
-
-void set_candidate(Cell *cell, int value);
-void unset_candidate(Cell *cell, int value);
-void set_candidates(Cell *cell, int *candidates, int size);
-int *get_candidates(Cell *cell);
+int nonzeroes(int test[], int M, int N);
+int compArr(int a[], int b[], int size);
+void convert(char n, int *s);
+struct cell board[9][9] = {0, {0}, {0}, {0}, {0}}; // starting board
