@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "hidden_singles.c"
+#include "hidden_pairs.c"
 #include "naked_pairs.c"
 
 int nonzeroes(int test[], int M, int N){
@@ -33,21 +34,22 @@ int main(){
 		printf("Cannot find file\n");
 		return 1;
 	}
-    char myStr[162];
-    fgets(myStr, 162, fptr);
-	for (int i = 0; i < 9; ++i)
-		for (int j = 0; j < 9; ++j){
-			int ctr = 2 * (9 * i + j);
-            convert(myStr[ctr], (board[i][j].cand + 5));
-            convert(myStr[ctr + 1], board[i][j].cand);
-            if (board[i][j].cand[0] == 1)
-                for (int k = 1; k < 10; ++k)
-                    if (board[i][j].cand[k] == 1){
-                        board[i][j].num = k;
-                        break;
-                    }
-        }
+    char myStr[163]; // must add 1 for the '\0'
+    fgets(myStr, 163, fptr);
+	for (int m = 0; m < 81; ++m){
+	    int i = m / 9, j = m % 9;
+		int ctr = 2 * (9 * i + j);
+        convert(myStr[ctr], (board[i][j].cand + 5));
+        convert(myStr[ctr + 1], board[i][j].cand);
+        if (board[i][j].cand[0] == 1)
+            for (int k = 1; k < 10; ++k)
+                if (board[i][j].cand[k] == 1){
+                    board[i][j].num = k;
+                    break;
+                }
+    }
     //printf("%d\n", hidden_singles(board));
-    printf("%d\n", naked_pairs(board));
+    //printf("%d\n", naked_pairs(board));
+    printf("%d\n", hidden_pairs(board));
     return 0;
 }

@@ -2,9 +2,10 @@
 #include "hidden_singles.h"
 
 int hidden_singles(struct cell board[9][9]){
-    int solved = 0, count = 0, value;
-    for (int i = 0; i < 9; i++){
-        for (int j = 0; j < 9; j++){ // going through all cells
+    int solved = 0;
+    for (int m = 0; m < 81; m++){
+            int i = m / 9, j = m % 9;
+            // going through all cells, delete all potentials that are written or noted
             if (board[i][j].num == 0){ // if not filled
                 for (int k = 0; k < 9; k++){
                     if (j != k) // check with others in row
@@ -25,13 +26,8 @@ int hidden_singles(struct cell board[9][9]){
                             if (board[box_i][box_j].cand[l] == 1) board[i][j].box[l - 1] = 1;    
                 }
                 for (int k = 0; k < 9; k++)
-                    if (board[i][j].row[k] * board[i][j].col[k] * board[i][j].box[k] == 0 && board[i][j].cand[k + 1]){
-                        solved++; /* the next 3 lines are if need to fill in
-                        board[i][j].num = k + 1;
-                        board[i][j].cand[0] = 1;
-                        break; */
-                    }
-            }
+                    if (board[i][j].row[k] * board[i][j].col[k] * board[i][j].box[k] == 0 && board[i][j].cand[k + 1])
+                        solved++; 
         }
     }
     return solved;
