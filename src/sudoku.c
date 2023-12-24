@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 #include "hidden_singles.c"
 #include "hidden_pairs.c"
 #include "naked_pairs.c"
