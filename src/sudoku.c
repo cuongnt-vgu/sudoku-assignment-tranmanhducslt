@@ -49,6 +49,6 @@ int main(){
     }
     //printf("%d\n", hidden_singles(board));
     //printf("%d\n", naked_pairs(board));
-    printf("%d\n", hidden_pairs(board));
+    //printf("%d\n", hidden_pairs(board));
     return 0;
 }
