@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "hidden_singles.c"
 #include "hidden_pairs.c"
 #include "naked_pairs.c"
@@ -16,14 +17,24 @@ int compArr(int a[], int b[], int size){
 	return 1; // comparing two arrays
 }
 
-void convert(char n, int *s){
+void torevbin(char n, int *s){
+    // number to reversed binary
     int m = 0, i = 0;
     while (map[m] != n) m++;
-    // number to reversed binary
     while (m > 0){
         s[i] = (m % 2);
         i++; m /= 2;
     }
+}
+
+char tochar(int *s){
+    // reversed binary to number
+    int n = 0, p = 1;
+    for (int i = 0; i < 5; i++) {
+        n += s[i] * p;
+        p *= 2;
+    }
+    return map[n];
 }
 
 int main(){
@@ -33,13 +44,14 @@ int main(){
 		printf("Cannot find file\n");
 		return 1;
 	}
+    // string to board layout
     char myStr[163]; // must add 1 for the '\0'
     fgets(myStr, 163, fptr);
 	for (int m = 0; m < 81; ++m){
 	    int i = m / 9, j = m % 9;
 		int ctr = 2 * (9 * i + j);
-        convert(myStr[ctr], (board[i][j].cand + 5));
-        convert(myStr[ctr + 1], board[i][j].cand);
+        torevbin(myStr[ctr], (board[i][j].cand + 5));
+        torevbin(myStr[ctr + 1], board[i][j].cand);
         if (board[i][j].cand[0] == 1)
             for (int k = 1; k < 10; ++k)
                 if (board[i][j].cand[k] == 1){
@@ -47,8 +59,20 @@ int main(){
                     break;
                 }
     }
-    //printf("%d\n", hidden_singles(board));
-    //printf("%d\n", naked_pairs(board));
-    //printf("%d\n", hidden_pairs(board));
+
+    // pointer to board, to directly modify board
+    struct cell **pboard = (struct cell**)malloc(9 * sizeof(int*)); 
+    for (int i = 0; i < 9; i++) pboard[i] = board[i];
+    printf("%d\n", hidden_singles(pboard));
+    // return board
+    for (int m = 0; m < 81; ++m){
+        int i = m / 9, j = m % 9;
+        // update string
+        int ctr = 2 * (9 * i + j);
+        myStr[ctr] = tochar(pboard[i][j].cand + 5);
+        myStr[ctr + 1] = tochar(pboard[i][j].cand);
+    }
+    free(pboard);
+    printf("%s\n", myStr);
     return 0;
 }
