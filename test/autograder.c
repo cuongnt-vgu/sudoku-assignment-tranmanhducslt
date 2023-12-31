@@ -157,8 +157,8 @@ int main(int argc, char **argv)
             "}\n",
             num_detected, outText);
 
-    free_sudoku(board);
-    free(board);
+    
+    free(pboard);
     free(outText);
 
     fclose(pipe);

@@ -27,19 +27,6 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    // 81-digit string to board layout
-    int solved = 0, stepcount = 0; // solved in total/in each step
-	for (int m = 0; m < 81; ++m){
-	    int i = m / 9, j = m % 9;
-		board[i][j].num = argv[1][m] - '0'; // convert char to int
-    }
-
-    // pointer to board, to directly modify board
-    struct cell **pboard = (struct cell**)malloc(9 * sizeof(int*)); 
-    for (int i = 0; i < 9; i++) pboard[i] = board[i];
-    
-    setnote(pboard);
-
     // run algorithms
     while (solved < 81)
     {
