@@ -2,7 +2,6 @@
 #include "setnote.h"
 
 void setnote(struct cell **pboard){
-    int solved = 0;
     for (int m = 0; m < 81; m++){
             int i = m / 9, j = m % 9;
             if (pboard[i][j].num > 0){

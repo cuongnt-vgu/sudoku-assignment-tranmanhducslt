@@ -66,7 +66,7 @@ int main(int argc, char **argv){
     // return board
     for (int m = 0; m < 81; ++m){
         int i = m / 9, j = m % 9;
-        argv[1][m] = pboard[i][j].cand + '0';
+        argv[1][m] = pboard[i][j].num + '0';
     }
 
     free(pboard);
