@@ -3,16 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <unistd.h>
+#include <unistd.h>
 #include <wchar.h>
 #include <stdbool.h>
 
 #include "../src/sudoku.h"
 #include "../src/hidden_singles.h"
 #include "../src/hidden_pairs.h"
-#include "../src/hidden_triples.h"
+//#include "../src/hidden_triples.h"
 #include "../src/naked_pairs.h"
-#include "../src/naked_triples.h"
+//#include "../src/naked_triples.h"
 
 // Verbosity of test runner. Overridden via compilation flag
 #ifdef VERBOSE
