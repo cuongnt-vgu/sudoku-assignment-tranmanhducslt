@@ -14,4 +14,4 @@ struct cell{
 int nonzeroes(int test[], int L, int R);
 int compArr(int a[], int b[], int size);
 void convert(char n, int *s);
-struct cell board[9][9] = {0, {0}, {0}, {0}, {0}}; // starting board
+struct cell board[9][9]; // starting board, with all 0s
