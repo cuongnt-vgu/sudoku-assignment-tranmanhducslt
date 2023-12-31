@@ -2,8 +2,8 @@
 #include "naked_pairs.h"
 
 int isNakedPair(struct cell a, struct cell b){
-  return (nonzeroes(a.cand, 1, 10) == 2 && // a has 2 candidates
-          nonzeroes(b.cand, 1, 10) == 2 && // b has 2 candidates
+  return (nonzeroes(a.cand, 1, 9) == 2 && // a has 2 candidates
+          nonzeroes(b.cand, 1, 9) == 2 && // b has 2 candidates
           compArr(a.cand, b.cand, 10)); // they match
 }
 
