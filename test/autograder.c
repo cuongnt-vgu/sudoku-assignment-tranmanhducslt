@@ -54,7 +54,7 @@ int toInteger(int *bin_array, int len)
     return num;
 }
 
-void load_cell_candidates(Cell *p_cell, char *textData)
+void load_cell_candidates(cell *p_cell, char *textData)
 {
     int left_num = get_index(mapping, 32, textData[0]);
     int right_num = get_index(mapping, 32, textData[1]);
@@ -64,60 +64,52 @@ void load_cell_candidates(Cell *p_cell, char *textData)
     toBinary(right_num, &(bin_candidates[0]));
     toBinary(left_num, &(bin_candidates[5]));
 
-    int counter = 0;
-    int candidates[BOARD_SIZE];
+    for (int i = 0; i < 10; i++) 
+            p_cell->cand[i] = bin_candidates[i];
 
-    for (int cand = 1; cand <= 9; cand++)
-    {
-        if (bin_candidates[cand])
-            candidates[counter++] = cand;
+    if (p_cell->cand[0]){
+        for (int i = 1; i < 10; i++){ 
+            if (p_cell->cand[i]){
+                p_cell->num = i;
+                break;
+            }
+        }
     }
-
-    set_candidates(p_cell, candidates, counter);
-    if (bin_candidates[0])
-        p_cell->fixed = true;
-    else
-        p_cell->fixed = false;
 }
 
-void load_sudoku_with_candidates(SudokuBoard *p_board, char *textData)
+void load_sudoku_with_candidates(cell **pboard, char *textData)
 {
-    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; i++)
+    for (int i = 0; i < 9 * 9; i++)
     {
-        load_cell_candidates(&(p_board->data[i / BOARD_SIZE][i % BOARD_SIZE]), textData);
+        load_cell_candidates(pboard[i / 9][i % 9].num, textData);
         textData += 2;
     }
 }
 
-void print_string_candidates(Cell *p_cell, char *textData)
+void print_string_candidates(cell *p_cell, char *textData)
 {
-    int *candidates = get_candidates(p_cell);
-    int len = p_cell->num_candidates;
-
     int bin_candidates[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    if (p_cell->fixed)
+    if (p_cell->num){
         bin_candidates[0] = 1;
-
-    for (int i = 0; i < len; i++)
-    {
-        bin_candidates[candidates[i]] = 1;
+    }
+    for (int i = 1; i < 10; i++){
+        bin_candidates[i] = p_cell->cand[i];
     }
     int left_index = toInteger(&(bin_candidates[5]), 5);
     int right_index = toInteger(&(bin_candidates[0]), 5);
-    sprintf(textData, "%c%c", mapping[left_index], mapping[right_index]);
-    free(candidates);
+    sprintf(textData, "%c%c", mapping[left_index], mapping[right_index]);    
 }
 
-void print_sudoku_with_candidates(SudokuBoard *p_board, char *textData)
+void print_sudoku_with_candidates(cell **pboard, char *textData)
 {
-    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; i++)
+    for (int i = 0; i < 9 * 9; i++)
     {
-        print_string_candidates(&(p_board->data[i / BOARD_SIZE][i % BOARD_SIZE]), textData);
+        print_string_candidates(pboard[i / 9][i % 9].num, textData);
         textData += 2;
     }
 }
 
-typedef int (*method)(SudokuBoard *p_board);
+typedef int (*method)(cell **pboard);
 
 method get_method(char *method_name)
 {
@@ -143,15 +135,17 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    SudokuBoard *board = malloc(sizeof(SudokuBoard));
-    init_sudoku(board);
+    struct cell **pboard = (struct cell**)malloc(9 * sizeof(int*)); 
+    for (int i = 0; i < 9; i++) pboard[i] = board[i];
+    
+    setnote(pboard);
     load_sudoku_with_candidates(board, argv[1]);
 
     FILE *pipe = fdopen(atoi(argv[3]), "w");
 
     int num_detected = get_method(argv[2])(board);
 
-    char *outText = malloc(BOARD_SIZE * BOARD_SIZE * 2 + 1);
+    char *outText = malloc(9 * 9 * 2 + 1);
     outText[0] = '\0';
 
     print_sudoku_with_candidates(board, outText);
