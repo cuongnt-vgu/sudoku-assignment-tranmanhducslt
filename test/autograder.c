@@ -64,9 +64,9 @@ void load_cell_candidates(cell *p_cell, char *textData)
     toBinary(right_num, &(bin_candidates[0]));
     toBinary(left_num, &(bin_candidates[5]));
 
-    for (int i = 0; i < 10; i++) 
-            p_cell->cand[i] = bin_candidates[i];
-
+    for (int i = 0; i < 10; i++){     
+        p_cell->cand[i] = bin_candidates[i];
+    }
     if (p_cell->cand[0]){
         for (int i = 1; i < 10; i++){ 
             if (p_cell->cand[i]){
