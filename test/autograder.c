@@ -54,7 +54,7 @@ int toInteger(int *bin_array, int len)
     return num;
 }
 
-void load_cell_candidates(cell *p_cell, char *textData)
+void load_cell_candidates(struct cell *p_cell, char *textData)
 {
     int left_num = get_index(mapping, 32, textData[0]);
     int right_num = get_index(mapping, 32, textData[1]);
@@ -77,7 +77,7 @@ void load_cell_candidates(cell *p_cell, char *textData)
     }
 }
 
-void load_sudoku_with_candidates(cell **pboard, char *textData)
+void load_sudoku_with_candidates(struct cell **pboard, char *textData)
 {
     for (int i = 0; i < 9 * 9; i++)
     {
@@ -86,7 +86,7 @@ void load_sudoku_with_candidates(cell **pboard, char *textData)
     }
 }
 
-void print_string_candidates(cell *p_cell, char *textData)
+void print_string_candidates(struct cell *p_cell, char *textData)
 {
     int bin_candidates[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     if (p_cell->num){
@@ -100,7 +100,7 @@ void print_string_candidates(cell *p_cell, char *textData)
     sprintf(textData, "%c%c", mapping[left_index], mapping[right_index]);    
 }
 
-void print_sudoku_with_candidates(cell **pboard, char *textData)
+void print_sudoku_with_candidates(struct cell **pboard, char *textData)
 {
     for (int i = 0; i < 9 * 9; i++)
     {
@@ -109,7 +109,7 @@ void print_sudoku_with_candidates(cell **pboard, char *textData)
     }
 }
 
-typedef int (*method)(cell **pboard);
+typedef int (*method)(struct cell **pboard);
 
 method get_method(char *method_name)
 {
